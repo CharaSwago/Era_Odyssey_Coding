@@ -5,18 +5,29 @@ using UnityEngine;
 public class movePlayer : MonoBehaviour
 
 {
-    //Variable publique, mouvement du perso
+    // Variable publique, mouvement du perso
     public float moveSpeed;
-    //Variable publique, saut + force du saut + savoir si le perso touche le sol
-    public float jumpForce;
-    public bool isJumping = false;
-    public bool isGrounded;
 
-    //Variable pour le systeme du saut
+    // Variable publique, saut + force du saut + savoir si le perso touche le sol
+    public float jumpForce;
+    private bool isJumping = false;
+    private bool isGrounded;
+    private bool isWall;
+    private float slideSpeed = 1.5f;
+
+    // Variable pour le systeme d'accroche au mur 
+    public Transform wallCheckRigth;
+    public float wallCheckRigthRadius;
+    public Transform wallCheckLeft;
+    public float wallCheckLeftRadius;
+
+
+    // Variable pour le systeme du saut 
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask collisionLayers;
-    //L'animation du saut
+
+    // L'animation du saut
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
@@ -57,14 +68,23 @@ public class movePlayer : MonoBehaviour
             rb.velocity = dashingDir.normalized * dashingVelocity;
         }
 
+        if(isWall && !isGrounded){
+            wallSide();
+        }
+
         Flip(rb.velocity.x);
         
         float characterVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("speed", characterVelocity);
+
+        
     }
 
     void FixedUpdate()
     {
+        isWall = Physics2D.OverlapCircle(wallCheckLeft.position, wallCheckLeftRadius, collisionLayers) || 
+        Physics2D.OverlapCircle(wallCheckRigth.position, wallCheckRigthRadius, collisionLayers);
+
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, collisionLayers);
         MovePlayer(horizontalMovement);
     }
@@ -94,12 +114,18 @@ public class movePlayer : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        Gizmos.DrawWireSphere(wallCheckLeft.position, wallCheckLeftRadius);
+        Gizmos.DrawWireSphere(wallCheckRigth.position, wallCheckRigthRadius);
     }
 
     private IEnumerator stopDashing(){
         yield return new WaitForSeconds(dashingTime);
         trailRenderer.emitting = false;
         isDashing = false;
+    }
+
+    private void wallSide(){
+        rb.velocity = new Vector2(rb.velocity.x, -slideSpeed);
     }
 
 }
