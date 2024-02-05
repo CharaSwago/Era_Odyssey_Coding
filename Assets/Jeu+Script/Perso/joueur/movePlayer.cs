@@ -8,6 +8,7 @@ public class movePlayer : MonoBehaviour
 
     public bool isJumping = false;
     public bool isGrounded;
+    public bool canDoubleJump = false;
 
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -24,9 +25,13 @@ public class movePlayer : MonoBehaviour
     {
         horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if(Input.GetButtonDown("Jump") && (isGrounded || canDoubleJump))
         {
             isJumping = true;
+
+            if(!isGrounded){
+                canDoubleJump = true;
+            }
         }
 
         Flip(rb.velocity.x);
