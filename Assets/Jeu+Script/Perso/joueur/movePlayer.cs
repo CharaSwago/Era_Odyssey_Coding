@@ -8,6 +8,7 @@ public class movePlayer : MonoBehaviour
     // Variable publique, mouvement du perso
     public float moveSpeed;
     public float wallSpeed;
+    private bool isMoving;
 
     // Variable publique, saut + force du saut + savoir si le perso touche le sol
     [Range(1,10)]
@@ -16,14 +17,20 @@ public class movePlayer : MonoBehaviour
     private bool isGrounded;
     private bool isWall;
     private float slideSpeed = 1.5f;
-    
+
     // Variable pour le systeme d'accroche au mur 
     public Transform wallCheckRigth;
     public float wallCheckRigthRadius;
     public Transform wallCheckLeft;
     public float wallCheckLeftRadius;
     public bool wallGrab;
-    public bool wallJumped;
+
+    // Variable pour le systeme du saut sur le mur
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    public float wallJumpingTime;
+    private float WallJumpingCounter;
+    public float wallJumpingDuration;
 
 
     // Variable pour le systeme du saut 
@@ -51,7 +58,7 @@ public class movePlayer : MonoBehaviour
 
         horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
 
-        if(Input.GetButton("Jump") && isGrounded)
+        if(Input.GetButtonDown("Jump") && isGrounded)
         {
             isJumping = true;
             canDashing = true;
@@ -60,7 +67,6 @@ public class movePlayer : MonoBehaviour
         if (Input.GetButtonDown("Dash") && canDashing){
             canDashing = false;
             isDashing = true;
-            wallJumped = true;
             trailRenderer.emitting = true;
             dashingDir = new Vector2(horizontalMovement, Input.GetAxis("Vertical"));
             if(dashingDir == Vector2.zero){
@@ -79,19 +85,19 @@ public class movePlayer : MonoBehaviour
 
         Flip(rb.velocity.x);
 
-        
         float characterVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("speed", characterVelocity);
 
         wallGrab = isWall && Input.GetButton("Grab");
 
         if(wallGrab){
-            rb.velocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") * wallSpeed);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(Input.GetAxis("Vertical"),  -wallSpeed, float.MaxValue));
+            rb.gravityScale = 0f; // Définit la gravité à zéro
+        } 
+        else {
+            rb.gravityScale = 1f; // Rétablit la gravité normale si l'objet n'est pas en train de saisir le mur
         }
 
-        if(wallJumped == true){
-            rb.velocity = Vector2.Lerp(rb.velocity, horizontalMovement, .5f * Time.deltaTime);
-        }
     }
 
     void FixedUpdate()
@@ -105,10 +111,9 @@ public class movePlayer : MonoBehaviour
 
     void MovePlayer(float _horizontalMovement)
     {
-        
         Vector3 targetVelocity = new Vector2(_horizontalMovement, rb.velocity.y);
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
-        
+
         if(isJumping == true)
         {
             rb.velocity = Vector2.up * jumpForce;
@@ -123,7 +128,6 @@ public class movePlayer : MonoBehaviour
         } else if (_velocity < -0.1f){
             spriteRenderer.flipX = true;
         }
-
     }
 
     private void OnDrawGizmos()
@@ -143,7 +147,6 @@ public class movePlayer : MonoBehaviour
     private void wallSide()
     {
         rb.velocity = new Vector2(rb.velocity.x, -slideSpeed);
-        
     }
 
 }
