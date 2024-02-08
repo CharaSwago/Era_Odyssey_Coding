@@ -18137,11 +18137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8141312887726233428, guid: e2e34259523874405833adbe99c347db, type: 3}
       propertyPath: wallJumpAngle.x
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8141312887726233428, guid: e2e34259523874405833adbe99c347db, type: 3}
       propertyPath: wallJumpAngle.y
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8141312887726233428, guid: e2e34259523874405833adbe99c347db, type: 3}
       propertyPath: lowJumpMutiplier
