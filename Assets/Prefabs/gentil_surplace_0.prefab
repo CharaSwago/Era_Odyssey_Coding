@@ -153,17 +153,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1500
-  jumpForce: 300
-  isJumping: 0
-  isGrounded: 0
+  wallSpeed: 0
+  jumpForce: 10
+  wallCheckRigth: {fileID: 0}
+  wallCheckLeft: {fileID: 0}
+  wallJumpForce: 18
+  wallJumpDirection: 0
+  wallJumpAngle: {x: 0, y: 0}
   groundCheck: {fileID: 6460172286142011329}
-  groundCheckRadius: 0.156
   collisionLayers:
     serializedVersion: 2
     m_Bits: 1
   animator: {fileID: 5704232090852458395}
   spriteRenderer: {fileID: 7145957859297605579}
   rb: {fileID: 1589810515709917226}
+  trailRenderer: {fileID: 0}
 --- !u!70 &7239029390342604981
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
