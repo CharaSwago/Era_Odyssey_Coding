@@ -22,7 +22,7 @@ public class movePlayer : MonoBehaviour
 
 
     // Variable pour la vitesse de glisse + systeme de glisse
-    private bool wallSlideCheck = false;
+    private bool wallSlideCheck;
     private float slideSpeed = 2f;
 
     // Variable pour le systeme d'accroche au mur 
