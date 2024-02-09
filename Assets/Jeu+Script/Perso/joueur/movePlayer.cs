@@ -11,10 +11,11 @@ public class movePlayer : MonoBehaviour
     private bool isMoving;
 
     // Variable publique du saut
+    [Header ("Jump")]
     [Range(1,10)]
     public float jumpForce;
     private bool isJumping = false;
-
+    
     // Variable bool 
     private bool isGrounded;
     private bool isWall;
@@ -53,8 +54,8 @@ public class movePlayer : MonoBehaviour
     private float horizontalMovement;
 
     // Variable du dash
-    private float dashingVelocity = 5f;
-    private float dashingTime = 0.45f; 
+    private float dashingVelocity = 10f;
+    private float dashingTime = 0.1f; 
     private Vector2 dashingDir;
     private bool isDashing;
     private bool canDashing = true;
@@ -76,9 +77,9 @@ public class movePlayer : MonoBehaviour
             canDashing = false;
             isDashing = true;
             trailRenderer.emitting = true;
-            dashingDir = new Vector2(horizontalMovement, Input.GetAxis("Vertical"));
+            dashingDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             if(dashingDir == Vector2.zero){
-                dashingDir = new Vector2(transform.localScale.x, 0);
+                dashingDir = new Vector2(transform.localScale.x, 0f);
             }
             StartCoroutine(stopDashing());
         }
