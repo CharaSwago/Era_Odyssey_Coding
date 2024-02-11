@@ -16,14 +16,15 @@ public class movePlayer : MonoBehaviour
     public float jumpForce;
     private bool isJumping = false;
     
-    // Variable bool 
+    // Variable autre 
     private bool isGrounded;
     private bool isWall;
     private bool isWallJumping = false ; 
+    public CapsuleCollider2D playerCollider;
 
 
     // Variable pour la vitesse de glisse + systeme de glisse
-    private bool wallSlideCheck;
+    private bool wallSlideCheck = false;
     private float slideSpeed = 2f;
 
     // Variable pour le systeme d'accroche au mur 
@@ -60,6 +61,19 @@ public class movePlayer : MonoBehaviour
     private bool isDashing;
     private bool canDashing = true;
     [SerializeField] private TrailRenderer trailRenderer; 
+
+    public static movePlayer instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogWarning("Il y a plus d'une instance de PlayerMovement dans scÃ¨ne");
+            return;
+        }
+        instance = this;
+    }
+
 
     void Update()
     {
