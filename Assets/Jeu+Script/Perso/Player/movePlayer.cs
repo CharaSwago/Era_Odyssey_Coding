@@ -15,13 +15,12 @@ public class movePlayer : MonoBehaviour
     [Range(1,10)]
     public float jumpForce;
     private bool isJumping = false;
-    
+
     // Variable autre 
     private bool isGrounded;
     private bool isWall;
     private bool isWallJumping = false ; 
     public CapsuleCollider2D playerCollider;
-
 
     // Variable pour la vitesse de glisse + systeme de glisse
     private bool wallSlideCheck = false;
@@ -74,11 +73,12 @@ public class movePlayer : MonoBehaviour
         instance = this;
     }
 
-
     void Update()
     {
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
 
-        horizontalMovement = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+        horizontalMovement = x * moveSpeed * Time.deltaTime;
 
         if(Input.GetButtonDown("Jump") && (isGrounded || isWall))
         {
@@ -91,7 +91,7 @@ public class movePlayer : MonoBehaviour
             canDashing = false;
             isDashing = true;
             trailRenderer.emitting = true;
-            dashingDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            dashingDir = new Vector2(x, y);
             if(dashingDir == Vector2.zero){
                 dashingDir = new Vector2(transform.localScale.x, 0f);
             }
@@ -117,7 +117,7 @@ public class movePlayer : MonoBehaviour
         isWallGrab = isWall && Input.GetButton("Grab");
 
         if(isWallGrab){
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(Input.GetAxis("Vertical"), -wallSpeed, float.MaxValue));
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(y, -wallSpeed, float.MaxValue));
             // Définit la gravité à zéro
             rb.gravityScale = 0f; 
         } else {
