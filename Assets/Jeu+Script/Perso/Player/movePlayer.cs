@@ -77,6 +77,8 @@ public class movePlayer : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+        float xRaw = Input.GetAxisRaw("Horizontal");
+        float yRaw = Input.GetAxisRaw("Vertical");
 
         horizontalMovement = x * moveSpeed * Time.deltaTime;
 
@@ -165,11 +167,11 @@ public class movePlayer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // for ground check
+        // pour ground check
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
-        // for wall check
+        // pour wall check
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(wallCheckLeft.position, wallCheckLeftRadius);
 
@@ -184,7 +186,7 @@ public class movePlayer : MonoBehaviour
     }
 
     private void wallSlide(){
-        if(isWall && !isGrounded){
+        if(isWall && !isGrounded && !isWallJumping){
             wallSlideCheck = true; 
             rb.velocity = new Vector2(rb.velocity.x, -slideSpeed);
         }else{

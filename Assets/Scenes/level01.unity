@@ -18471,6 +18471,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gentil_surplace_0
       objectReference: {fileID: 0}
+    - target: {fileID: 1357579293793925421, guid: 109d85d12c29043b0adc7e585aca7bf2, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 1019069424}
     - target: {fileID: 7975381327468884968, guid: 109d85d12c29043b0adc7e585aca7bf2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
