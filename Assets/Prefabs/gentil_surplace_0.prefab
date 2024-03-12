@@ -109,7 +109,7 @@ MonoBehaviour:
   currentHealth: 0
   invincibilityTimeAfterHit: 2
   invincibilityFlashDelay: 0.2
-  isInvincible: 1
+  isInvincible: 0
   graphics: {fileID: 3357205906337957831}
   healthBar: {fileID: 0}
 --- !u!114 &6810814971570156553
@@ -285,7 +285,7 @@ TrailRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0
+        value: 0.012820512
         inSlope: 0
         outSlope: 0
         tangentMode: 0
